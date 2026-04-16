@@ -6,7 +6,7 @@ https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2020.5804
 Objectives
 
 - Gene Assembly & Reconstruction: Reassemble the bovine Interferon Alpha (IFNA) gene from fragmented NGS sequencing data (two parts of ~500 bp) to reconstruct the full coding sequence.
-- Haplotype Identification: Implement bioinformatic workflows to accurately distinguish between and identify individual haplotypes within the multicopy IFN gene family.
+- Haplotype Identification: Implement bioinformatic workflows to accurately distinguish between and identify individual haplotypes within the multicopy IFNA gene family.
 - Genetic Diversity Analysis: Evaluate the number of genetic variants and assess the level of polymorphism across 30–40 samples from diverse cattle breeds.
 - Comparative Genomics: Perform a comparative analysis of IFNA genetic diversity among different breeds to identify evolutionary patterns and breed-specific variations.
 
