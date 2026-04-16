@@ -14,3 +14,13 @@ conda install -c bioconda sickle-trim
 conda install -c bioconda fastqc
 conda install -c bioconda snakemake
 ```
+
+```bash
+conda install -c bioconda fastqc trimmomatic flash
+trimmomatic PE -phred33 \
+  Gradient-C7_S272_L001_R1_001.fastq.gz Gradient-C7_S272_L001_R2_001.fastq.gz \
+  r1_paired.fq.gz r1_unpaired.fq.gz \
+  r2_paired.fq.gz r2_unpaired.fq.gz \
+  SLIDINGWINDOW:4:28 MINLEN:50
+flash r1_paired.fq.gz r2_paired.fq.gz -m 10 -M 150 -o bovine_merged
+```
