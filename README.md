@@ -3,19 +3,18 @@
 Illumina Miseq, v3 600 циклов
 https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2020.580412/full
 
-Добрый день, Айгерим. В рамках данного проекта, необходимо провести анализ генетического разнообразия интерферонов у КРС. Данный ген имеет множество копий. Мы провели секвенирование гена у одного животного. Ген протяженностью окло 500 п.н., мы его разбили на 2 части. Ваша задача собрать и посмотреть возможно ли его перекрыть и оценить сколько иммется вариантов. Это возможно. В расках данной работы, напишите в первый месяц, проведен анализ источников и ПО, скрипитов и тюдю позволяющих ....... Во второй месяц, проведена установка, скриптов библиотек и т.д., в третий месяц анализ одного образца оценка качества и т.д. Болат сейчас вам пришлет сиквенс. Само поздно отчеты до вторника
+Objectives
 
-Под перекрыть имеется в виду сборка гена?
-Да, и так чтобы мы четко могли отличить гаплотипы
-Спасибо. Уточните позволяет ли метод определять гаплотипы тогда мы 30-40 образцов загрузим разных пород сравним
+- Gene Assembly & Reconstruction: Reassemble the bovine Interferon Alpha (IFNA) gene from fragmented sequencing data (two parts of ~500 bp) to reconstruct the full coding sequence.
+- Haplotype Identification: Implement bioinformatic workflows to accurately distinguish between and identify individual haplotypes within the multicopy IFNA gene family.
+- Genetic Diversity Analysis: Evaluate the number of genetic variants and assess the level of polymorphism across 30–40 samples from diverse cattle breeds.
+- Comparative Genomics: Perform a comparative analysis of IFNA genetic diversity among different breeds to identify evolutionary patterns and breed-specific variations.
 
-Айгерим, добрый день. Пришлите срочно сове резюме. До следующего четверга дайте информацию развернутую по возможночсти определения гаплотпипов. Прикрепил праймеры с котрпрыми был амплфифицированы фрагменты
-
-1 фрагмент	
+Primers:
+1 fragment	
 Inf_alpha-73F-3	TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCTGCAATGCCATCTGCTCT
 Inf_alpha_rev415	GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTCCTCCTGCCTCAGACAG
 	
-2 фрагмент	
+2 fragment	
 Inf_alpha_f186-2	TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCTGCAGGACAGAAATGACTT
 Inf_alpha_R601-3	GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTTTCTCCTGAAACTCTCCTGC
-<img width="1016" height="140" alt="image" src="https://github.com/user-attachments/assets/2b2fad2e-64e0-400e-8230-cfd96363d1d6" />
