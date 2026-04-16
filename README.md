@@ -1,6 +1,6 @@
 # antibodies
 
-Illumina Miseq, v3 600 циклов
+Illumina Miseq, v3 600 cycles
 https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2020.580412/full
 
 Objectives
