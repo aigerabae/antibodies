@@ -66,14 +66,23 @@ rbind(FWD2.ForwardReads = sapply(FWD2.orients, primerHits, fn = fnFs.filtN[[1]])
     fn = fnFs.filtN[[1]]), REV2.ReverseReads = sapply(REV2.orients, primerHits, fn = fnRs.filtN[[1]]))
 ```
 
+This table is a Primer Orientation Matrix:
+                  Forward Complement Reverse RevComp  
+FWD1.ForwardReads      17          0       0       0  
+FWD1.ReverseReads       1          0       0     108  
+REV1.ForwardReads     588          0       0   28012  
+REV1.ReverseReads   82311          0       0      43  
+                  Forward Complement Reverse RevComp  
+FWD2.ForwardReads       9          0       0       8  
+FWD2.ReverseReads       1          0       0    1935  
+REV2.ForwardReads     307          0       0      16  
+REV2.ReverseReads   44223          0       0       0  
 
-                  Forward Complement Reverse RevComp
-FWD1.ForwardReads      17          0       0       0
-FWD1.ReverseReads       1          0       0     108
-REV1.ForwardReads     588          0       0   28012
-REV1.ReverseReads   82311          0       0      43
-                  Forward Complement Reverse RevComp
-FWD2.ForwardReads       9          0       0       8
-FWD2.ReverseReads       1          0       0    1935
-REV2.ForwardReads     307          0       0      16
-REV2.ReverseReads   44223          0       0       0
+Key Takeaways:
+- The "Reverse" Bias: For some reason, your library preparation or the way the MiSeq was set up heavily favored the Reverse Primer side. This is why you couldn't find your FWD primers earlier with grep—they simply aren't in the reads in significant numbers.
+- Read-Through: Since you see REV1 in both R1 and R2 (one as Forward, one as RevComp), it means your DNA fragment might be shorter than the 301 cycles you programmed. The sequencer read all the way through the fragment and started reading the primer on the other side.
+- Primer Dimer vs. Real Data: If these fragments are very short, you might be sequencing "Primer Dimers" (primers just sticking to each other without any actual gene in between).
+
+What to check next:
+- Look at the length of your reads in the FASTQ file. If your fragments were supposed to be 500bp but your reads are only 300bp, you will only see one primer. If the fragments are 150bp, you will see both primers, but they will be "flipped" in one of the reads.
+- Does the expected size of your DNA fragments (the "legit" part) match the 301bp length of the MiSeq run?
