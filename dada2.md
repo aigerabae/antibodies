@@ -1,4 +1,6 @@
-The primer sequences might be wrong!!!
+The primer sequences need to be without adapter/overhang
+
+Removing TCGTCGGCAGCGTCAGATGTGTATAAGAGACA and GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
 
 following tutorials: https://benjjneb.github.io/dada2/tutorial.html
 this seems newer: https://benjjneb.github.io/dada2/ITS_workflow.html
@@ -24,10 +26,10 @@ path <- "/home"  ## CHANGE ME to the directory containing the fastq files.
 fnFs <- sort(list.files(path, pattern = "1_001.fastq.gz", full.names = TRUE))
 fnRs <- sort(list.files(path, pattern = "2_001.fastq.gz", full.names = TRUE))
 
-FWD1 <- "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCTGCAATGCCATCTGCTCT"
-FWD2 <- "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCTGCAGGACAGAAATGACTT"
-REV1 <- "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTCCTCCTGCCTCAGACAG"
-REV2 <- "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTTTCTCCTGAAACTCTCCTGC"
+FWD1 <- "GGCTGCAATGCCATCTGCTCT"
+FWD2 <- "GGCCTGCAGGACAGAAATGACTT"
+REV1 <- "CCTCCTCCTGCCTCAGACAG"
+REV2 <- "CCTTTCTCCTGAAACTCTCCTGC"
 
 # checking orientation of primers
 allOrients <- function(primer) {
