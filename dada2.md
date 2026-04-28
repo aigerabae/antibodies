@@ -1,5 +1,9 @@
 The primer sequences might be wrong!!!
 
+following tutorials: https://benjjneb.github.io/dada2/tutorial.html
+this seems newer: https://benjjneb.github.io/dada2/ITS_workflow.html
+might want to do it separately for 2 fragments and then combine
+
 ```bash
 docker pull blekhmanlab/dada2:1.26.0a
 docker run -it -v "$pwd":/home/ blekhmanlab/dada2:1.26.0a
