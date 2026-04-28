@@ -66,12 +66,13 @@ rbind(FWD2.ForwardReads = sapply(FWD2.orients, primerHits, fn = fnFs.filtN[[1]])
     fn = fnFs.filtN[[1]]), REV2.ReverseReads = sapply(REV2.orients, primerHits, fn = fnRs.filtN[[1]]))
 ```
 
-This table is a Primer Orientation Matrix:
+This table is a Primer Orientation Matrix:  
                   Forward Complement Reverse RevComp  
 FWD1.ForwardReads      17          0       0       0  
 FWD1.ReverseReads       1          0       0     108  
 REV1.ForwardReads     588          0       0   28012  
 REV1.ReverseReads   82311          0       0      43  
+
                   Forward Complement Reverse RevComp  
 FWD2.ForwardReads       9          0       0       8  
 FWD2.ReverseReads       1          0       0    1935  
