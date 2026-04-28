@@ -1,6 +1,6 @@
 The primer sequences need to be without adapter/overhang
 
-Removing TCGTCGGCAGCGTCAGATGTGTATAAGAGACA and GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
+Removing TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG and GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
 
 following tutorials: https://benjjneb.github.io/dada2/tutorial.html
 this seems newer: https://benjjneb.github.io/dada2/ITS_workflow.html
@@ -26,8 +26,8 @@ path <- "/home"  ## CHANGE ME to the directory containing the fastq files.
 fnFs <- sort(list.files(path, pattern = "1_001.fastq.gz", full.names = TRUE))
 fnRs <- sort(list.files(path, pattern = "2_001.fastq.gz", full.names = TRUE))
 
-FWD1 <- "GGCTGCAATGCCATCTGCTCT"
-FWD2 <- "GGCCTGCAGGACAGAAATGACTT"
+FWD1 <- "GCTGCAATGCCATCTGCTCT"
+FWD2 <- "GCCTGCAGGACAGAAATGACTT"
 REV1 <- "CCTCCTCCTGCCTCAGACAG"
 REV2 <- "CCTTTCTCCTGAAACTCTCCTGC"
 
@@ -66,24 +66,62 @@ rbind(FWD2.ForwardReads = sapply(FWD2.orients, primerHits, fn = fnFs.filtN[[1]])
     fn = fnFs.filtN[[1]]), REV2.ReverseReads = sapply(REV2.orients, primerHits, fn = fnRs.filtN[[1]]))
 ```
 
-This table is a Primer Orientation Matrix:  
-                  Forward Complement Reverse RevComp  
-FWD1.ForwardReads      17          0       0       0  
-FWD1.ReverseReads       1          0       0     108  
-REV1.ForwardReads     588          0       0   28012  
-REV1.ReverseReads   82311          0       0      43  
+This table is a Primers:  
+                  Forward Complement Reverse RevComp
+FWD1.ForwardReads   77538          0       0       0
+FWD1.ReverseReads     389          0       0     423
+REV1.ForwardReads     588          0       0   28012
+REV1.ReverseReads   82311          0       0      43
+                  Forward Complement Reverse RevComp
+FWD2.ForwardReads  118973          0       0     305
+FWD2.ReverseReads     525          0       0   21436
+REV2.ForwardReads     307          0       0      16
+REV2.ReverseReads   44223          0       0       0
 
-                  Forward Complement Reverse RevComp  
-FWD2.ForwardReads       9          0       0       8  
-FWD2.ReverseReads       1          0       0    1935  
-REV2.ForwardReads     307          0       0      16  
-REV2.ReverseReads   44223          0       0       0  
 
-Key Takeaways:
-- The "Reverse" Bias: For some reason, your library preparation or the way the MiSeq was set up heavily favored the Reverse Primer side. This is why you couldn't find your FWD primers earlier with grep—they simply aren't in the reads in significant numbers.
-- Read-Through: Since you see REV1 in both R1 and R2 (one as Forward, one as RevComp), it means your DNA fragment might be shorter than the 301 cycles you programmed. The sequencer read all the way through the fragment and started reading the primer on the other side.
-- Primer Dimer vs. Real Data: If these fragments are very short, you might be sequencing "Primer Dimers" (primers just sticking to each other without any actual gene in between).
+Installing cutadapt via conda:
+```bash
+#apt install curl
+#curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# i copied file from another repo 
+bash Miniconda3-latest-Linux-x86_64.sh
+conda
+```
 
-What to check next:
-- Look at the length of your reads in the FASTQ file. If your fragments were supposed to be 500bp but your reads are only 300bp, you will only see one primer. If the fragments are 150bp, you will see both primers, but they will be "flipped" in one of the reads.
-- Does the expected size of your DNA fragments (the "legit" part) match the 301bp length of the MiSeq run?
+in another window:
+```bash
+docker commit 20277fe72a02 dada2:v2.0
+docker run -it -v ~/biostar/NCB/antibodies/dada2:/home dada2:v2.0 bash
+cd home/
+conda create --name cutadapt python=3.7
+conda activate cutadapt
+conda install bioconda::cutadapt
+which cutadapt
+```
+
+in R:
+```R
+cutadapt <- "/home/conda/envs/cutadapt/bin/cutadapt" # CHANGE ME to the cutadapt path on your machine
+system2(cutadapt, args = "--version") # Run shell commands from R
+```
+
+Cutting - didn't do yet bc im not sure about both fragments:
+```R
+path.cut <- file.path(path, "cutadapt")
+if(!dir.exists(path.cut)) dir.create(path.cut)
+fnFs.cut <- file.path(path.cut, basename(fnFs))
+fnRs.cut <- file.path(path.cut, basename(fnRs))
+
+FWD.RC <- dada2:::rc(FWD)
+REV.RC <- dada2:::rc(REV)
+# Trim FWD and the reverse-complement of REV off of R1 (forward reads)
+R1.flags <- paste("-g", FWD, "-a", REV.RC) 
+# Trim REV and the reverse-complement of FWD off of R2 (reverse reads)
+R2.flags <- paste("-G", REV, "-A", FWD.RC) 
+# Run Cutadapt
+for(i in seq_along(fnFs)) {
+  system2(cutadapt, args = c(R1.flags, R2.flags, "-n", 2, # -n 2 required to remove FWD and REV from reads
+                             "-o", fnFs.cut[i], "-p", fnRs.cut[i], # output files
+                             fnFs.filtN[i], fnRs.filtN[i])) # input files
+}
+```
