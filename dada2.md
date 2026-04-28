@@ -8,11 +8,12 @@ might want to do it separately for 2 fragments and then combine
 
 ```bash
 docker pull blekhmanlab/dada2:1.26.0a
-docker run -it -v ~/biostar/NCB/antibodies/custom2:/home blekhmanlab/dada2:1.26.0a bash
+docker run -it -v ~/biostar/NCB/antibodies/dada2:/home blekhmanlab/dada2:1.26.0a bash
 cd home
 R
 ```
 
+Code in R
 ```R
 library(dada2)
 packageVersion("dada2")
@@ -63,3 +64,16 @@ rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.filtN[[1]])
 rbind(FWD2.ForwardReads = sapply(FWD2.orients, primerHits, fn = fnFs.filtN[[1]]), FWD2.ReverseReads = sapply(FWD2.orients,
     primerHits, fn = fnRs.filtN[[1]]), REV2.ForwardReads = sapply(REV2.orients, primerHits,
     fn = fnFs.filtN[[1]]), REV2.ReverseReads = sapply(REV2.orients, primerHits, fn = fnRs.filtN[[1]]))
+```
+
+
+                  Forward Complement Reverse RevComp
+FWD1.ForwardReads      17          0       0       0
+FWD1.ReverseReads       1          0       0     108
+REV1.ForwardReads     588          0       0   28012
+REV1.ReverseReads   82311          0       0      43
+                  Forward Complement Reverse RevComp
+FWD2.ForwardReads       9          0       0       8
+FWD2.ReverseReads       1          0       0    1935
+REV2.ForwardReads     307          0       0      16
+REV2.ReverseReads   44223          0       0       0
