@@ -8,7 +8,6 @@ might want to do it separately for 2 fragments and then combine
 
 ```bash
 docker pull blekhmanlab/dada2:1.26.0a
-docker run -it -v "$pwd":/home/ blekhmanlab/dada2:1.26.0a
 docker run -it -v ~/biostar/NCB/antibodies/custom2:/home blekhmanlab/dada2:1.26.0a bash
 cd home
 R
