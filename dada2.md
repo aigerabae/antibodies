@@ -223,23 +223,47 @@ rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), 
     primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
     fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
 # primer 2 in primer1 files
-rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
-    primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
-    fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
+rbind(FWD2.ForwardReads = sapply(FWD2.orients, primerHits, fn = fnFs.cut[[1]]), FWD2.ReverseReads = sapply(FWD2.orients,
+    primerHits, fn = fnRs.cut[[1]]), REV2.ForwardReads = sapply(REV2.orients, primerHits,
+    fn = fnFs.cut[[1]]), REV2.ReverseReads = sapply(REV2.orients, primerHits, fn = fnRs.cut[[1]]))
 ```
+Result:
+                  Forward Complement Reverse RevComp
+FWD1.ForwardReads       0          0       0       0
+FWD1.ReverseReads       0          0       0       0
+REV1.ForwardReads       0          0       0       0
+REV1.ReverseReads       0          0       0       0
+                  Forward Complement Reverse RevComp
+FWD2.ForwardReads  105476          0       0       1
+FWD2.ReverseReads       1          0       0   21391
+REV2.ForwardReads       0          0       0       1
+REV2.ReverseReads     569          0       0       0
 
 
-Sanity check primer1 files:
+Sanity check primer2 files:
 ```bash
 path.cut <- file.path(path, "cutadapt/primer2")
 fnFs.cut <- file.path(path.cut, basename(fnFs))
 fnRs.cut <- file.path(path.cut, basename(fnRs))
-# primer 2 in primer1 files
+# primer 1 in primer2 files
 rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
     primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
     fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
 # primer 2 in primer2 files
-rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
-    primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
-    fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
+rbind(FWD2.ForwardReads = sapply(FWD2.orients, primerHits, fn = fnFs.cut[[1]]), FWD2.ReverseReads = sapply(FWD2.orients,
+    primerHits, fn = fnRs.cut[[1]]), REV2.ForwardReads = sapply(REV2.orients, primerHits,
+    fn = fnFs.cut[[1]]), REV2.ReverseReads = sapply(REV2.orients, primerHits, fn = fnRs.cut[[1]]))
 ```
+Result:
+                  Forward Complement Reverse RevComp
+FWD1.ForwardReads      36          0       0       0
+FWD1.ReverseReads       0          0       0       4
+REV1.ForwardReads       0          0       0   27391
+REV1.ReverseReads   64825          0       0       0
+                  Forward Complement Reverse RevComp
+FWD2.ForwardReads       0          0       0       0
+FWD2.ReverseReads       2          0       0       0
+REV2.ForwardReads       0          0       0       0
+REV2.ReverseReads       0          0       0       0
+
+Because I used --discard-untrimmed flag, this means that Fragment 2 is "contaminating" my Fragment 1 files (and vice-versa) because the Fragment 2 primer sequence is actually present inside the Fragment 1 amplicon. This is expected but means that just splitting it might be more complicated than I thought
