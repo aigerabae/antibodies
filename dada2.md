@@ -1,14 +1,68 @@
 The primer sequences need to be without adapter/overhang
 
+Original primers:
+Primers: 
+1 fragment 
+Inf_alpha-73F-3 TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCTGCAATGCCATCTGCTCT 
+Inf_alpha_rev415 GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTCCTCCTGCCTCAGACAG  
+
+2 fragment   
+Inf_alpha_f186-2 TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCTGCAGGACAGAAATGACTT  
+Inf_alpha_R601-3 GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTTTCTCCTGAAACTCTCCTGC  
+
+
+fwd1
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCTGCAATGCCATCTGCTCT" | wc -l   # 0
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep                                 "GGCTGCAATGCCATCTGCTCT" | wc -l   #17
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep                                  "GCTGCAATGCCATCTGCTCT" | wc -l   #79395
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep                                   "CTGCAATGCCATCTGCTCT" | wc -l   #79951
+
+rev1
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTCCTCCTGCCTCAGACAG" | wc -l   # 0
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                  "GCCTCCTCCTGCCTCAGACAG" | wc -l   #41
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                   "CCTCCTCCTGCCTCAGACAG" | wc -l   #82721
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                    "CTCCTCCTGCCTCAGACAG" | wc -l   #83574
+
+fwd2
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGGCCTGCAGGACAGAAATGACTT" | wc -l   # 0
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep                                 "GGCCTGCAGGACAGAAATGACTT" | wc -l   #9
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep                                  "GCCTGCAGGACAGAAATGACTT" | wc -l   #121873
+zcat Gradient-C7_S272_L001_R1_001.fastq.gz | grep                                   "CCTGCAGGACAGAAATGACTT" | wc -l   #122397
+
+rev2
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGCCTTTCTCCTGAAACTCTCCTGC" | wc -l   # 0
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                  "GCCTTTCTCCTGAAACTCTCCTGC" | wc -l   # 3
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                   "CCTTTCTCCTGAAACTCTCCTGC" | wc -l   # 44233
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                    "CTTTCTCCTGAAACTCTCCTGC" | wc -l   # 44761
+zcat Gradient-C7_S272_L001_R2_001.fastq.gz | grep                                           "CTGAAACTCTCCTGC" | wc -l   # 46512
+
+To remove:
+fwd1:  TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+check: TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+fwd2:  TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+
+rev1:  GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
+check: GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
+rev2:  GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
+
 Removing TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG and GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
 
 following tutorials: https://benjjneb.github.io/dada2/tutorial.html
 this seems newer: https://benjjneb.github.io/dada2/ITS_workflow.html
 might want to do it separately for 2 fragments and then combine
 
+Pulling
 ```bash
 docker pull blekhmanlab/dada2:1.26.0a
+```
+
+Running
+```bash
 docker run -it -v ~/biostar/NCB/antibodies/dada2:/home blekhmanlab/dada2:1.26.0a bash
+```
+
+Going to directory and opening R
+```bash
 cd home
 R
 ```
@@ -105,23 +159,57 @@ cutadapt <- "/home/conda/envs/cutadapt/bin/cutadapt" # CHANGE ME to the cutadapt
 system2(cutadapt, args = "--version") # Run shell commands from R
 ```
 
-Cutting - didn't do yet bc im not sure about both fragments:
+Cutting - separate for 2 fragments
 ```R
 path.cut <- file.path(path, "cutadapt")
 if(!dir.exists(path.cut)) dir.create(path.cut)
 fnFs.cut <- file.path(path.cut, basename(fnFs))
 fnRs.cut <- file.path(path.cut, basename(fnRs))
 
-FWD.RC <- dada2:::rc(FWD)
-REV.RC <- dada2:::rc(REV)
+# primer 1
+FWD1.RC <- dada2:::rc(FWD1)
+REV1.RC <- dada2:::rc(REV1)
 # Trim FWD and the reverse-complement of REV off of R1 (forward reads)
-R1.flags <- paste("-g", FWD, "-a", REV.RC) 
+R1.flags <- paste("-g", FWD1, "-a", REV1.RC) 
 # Trim REV and the reverse-complement of FWD off of R2 (reverse reads)
-R2.flags <- paste("-G", REV, "-A", FWD.RC) 
-# Run Cutadapt
+R2.flags <- paste("-G", REV1, "-A", FWD1.RC) 
+# Run Cutadapt 
 for(i in seq_along(fnFs)) {
   system2(cutadapt, args = c(R1.flags, R2.flags, "-n", 2, # -n 2 required to remove FWD and REV from reads
+                              "--discard-untrimmed",         # i do it to separate 2 amplicons
                              "-o", fnFs.cut[i], "-p", fnRs.cut[i], # output files
                              fnFs.filtN[i], fnRs.filtN[i])) # input files
 }
 ```
+
+I manually moved these to primer1 folder inside cutadapt
+
+```bash
+# primer 2
+FWD2.RC <- dada2:::rc(FWD2)
+REV2.RC <- dada2:::rc(REV2)
+# Trim FWD and the reverse-complement of REV off of R1 (forward reads)
+R1.flags <- paste("-g", FWD2, "-a", REV2.RC) 
+# Trim REV and the reverse-complement of FWD off of R2 (reverse reads)
+R2.flags <- paste("-G", REV2, "-A", FWD2.RC) 
+# Run Cutadapt 
+for(i in seq_along(fnFs)) {
+  system2(cutadapt, args = c(R1.flags, R2.flags, "-n", 2, # -n 2 required to remove FWD and REV from reads
+                              "--discard-untrimmed",         # i do it to separate 2 amplicons
+                             "-o", fnFs.cut[i], "-p", fnRs.cut[i], # output files
+                             fnFs.filtN[i], fnRs.filtN[i])) # input files
+}
+```
+
+Bases preceding removed adapters:
+  A: 87.7%
+  C: 7.4%
+  G: 4.0%
+  T: 0.8%
+  none/other: 0.0%
+WARNING:
+    The adapter is preceded by "A" extremely often.
+    The provided adapter sequence could be incomplete at its 3' end.
+
+The primers are definitely correct so must be the biological reason for it
+
