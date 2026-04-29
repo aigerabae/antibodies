@@ -213,3 +213,33 @@ WARNING:
 
 The primers are definitely correct so must be the biological reason for it
 
+Sanity check primer1 files:
+```bash
+path.cut <- file.path(path, "cutadapt/primer1")
+fnFs.cut <- file.path(path.cut, basename(fnFs))
+fnRs.cut <- file.path(path.cut, basename(fnRs))
+# primer 1 in primer1 files
+rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
+    primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
+    fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
+# primer 2 in primer1 files
+rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
+    primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
+    fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
+```
+
+
+Sanity check primer1 files:
+```bash
+path.cut <- file.path(path, "cutadapt/primer2")
+fnFs.cut <- file.path(path.cut, basename(fnFs))
+fnRs.cut <- file.path(path.cut, basename(fnRs))
+# primer 2 in primer1 files
+rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
+    primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
+    fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
+# primer 2 in primer2 files
+rbind(FWD1.ForwardReads = sapply(FWD1.orients, primerHits, fn = fnFs.cut[[1]]), FWD1.ReverseReads = sapply(FWD1.orients,
+    primerHits, fn = fnRs.cut[[1]]), REV1.ForwardReads = sapply(REV1.orients, primerHits,
+    fn = fnFs.cut[[1]]), REV1.ReverseReads = sapply(REV1.orients, primerHits, fn = fnRs.cut[[1]]))
+```
